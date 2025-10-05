@@ -1,76 +1,87 @@
-# Ackowledgements
-You can check Terminal Prompts too but this has more info ;)
+# Disentangled Latent Gating for Expression-Preserving StyleCLIP  
+(ICCV 2021 Reimplementation & Improvement Project)
 
-Pretained models, datasets have been borrowed from the original paper but our implementation is original
-Base paper:https://arxiv.org/abs/2103.17249
+Contributors:  
+KAIST
+Calvin Samuel (20210899), Himani Paudayal (20220776), Lunar Sebastian Widjaja (20220933), Samuel Dawit Assefa (20230858), Yomori Achiza (20230931)
 
-To start, run these commands in terminal
+---
 
-cd StyleCLIP (if you haven't changed the directory)
-pip install -r requirements.txt
+## Poster  
+You can view our project poster here:  
+[https://drive.google.com/file/d/1hD8vL7_lSOwZ1lC2b5JY6oTJNRUGiw8h/view?usp=sharing]
 
-# Training Our Mapper
-To train the model, we have implemented two methods
+---
 
-1. Static mapper gates: train_1.py (was used to train Beyonce, Hillary clinton models)
-2. Dynamic mapper gates: train_2.py (was used to train annoyed, surprised models)
+## Base Paper  
+StyleCLIP: Text-Driven Manipulation of StyleGAN Imagery (ICCV 2021)  
+https://arxiv.org/abs/2103.17249
 
-Path info: 
-Train data is in /StyleCLIP/data
-Stylegan weights are in /StyleCLIP/pretrained_models/stylegan2-ffhq-config-f.pt
-ir_se50_weights are in /StyleCLIP/pretrained_models/model_ir_se50.pth
+---
 
-Change the parameters as you like from the args parser in the train files
-The entire code from architecture to train is train_1.py (Method 1) and  train_2.py (Method 2)
+## Description  
+This repository contains our reimplementation and improvement of StyleCLIP, focusing on expression preservation and disentanglement in latent space.  
+Our proposed method, Disentangled Latent Gating, splits the latent vector into multiple segments, each trained with static or dynamic gating to regulate the influence of edits.  
+This approach allows localized control over features such as expression, hair, and geometry, improving the realism and consistency of generated images.
 
-Terminal prompts:
+---
 
-*Method 1
-python train_1.py --prompt "Hillary Clinton" 
+## Training Setup  
+To begin training, install all required dependencies and prepare the dataset and pretrained weights as indicated in the args parser.  
 
-*Method 2
-python train_2.py --prompt "Surprised" 
+Training methods implemented in this project:
 
-If the paths creates issues pls change the paths in args parse as per your system. We have placed exact models in those folders mentioned in Path Info
+- Static Mapper Gates: Used for identity-preserving transformations such as "Hillary Clinton" and "Beyonce".  
+- Dynamic Mapper Gates: Used for subtle or expression-based edits such as "Surprised" and "Annoyed".  
 
-The trained results will be saved in train_1_results and train_2_results folder respectively
+Training data is located in `/StyleCLIP/data`.  
+Pretrained weights are located in `/StyleCLIP/pretrained_models/`.  
+Trained results are automatically saved in the following folders:
 
-# Running Inference with Pretrained Mappers
+- `train_1_results/` for static mapper  
+- `train_2_results/` for dynamic mapper  
 
-For Inference, we used Celebrity data (named as celebrity_data in the StyleCLIP folder)
+If there are path issues, modify them directly in the argument parser of the corresponding training scripts.
 
-For model Checkpoints, please check Best_Checkpoints folder, we have 4 .pt files
-path: /StyleCLIP/Best_Checkpoints/Suprised.pt
-Please use inference_1.py to check Hillary Clinton, Beyonce's results and use inference_2.py to check surprised and annoyed results
+---
 
-You have to give the prompt that was used to train the model:
-prompt for 'Beyonce_Best.pt' = "Beyonce Knowles"
-prompt for 'Clinton_Best.pt' = "Hillary Clinton"
-prompt for 'Annoyed_Best.pt' = "Annoyed face"
-prompt for 'Surprised.pt'    = "Surprised face"
+## Inference Setup  
+To run inference, use the provided pretrained mapper checkpoints and specify the corresponding text prompts.  
 
-Change the prompt option in arg parser
+Example prompt–model mapping:  
+- Beyonce_Best.pt → "Beyonce Knowles"  
+- Clinton_Best.pt → "Hillary Clinton"  
+- Annoyed_Best.pt → "Annoyed face"  
+- Surprised.pt → "Surprised face"  
 
-We have kept the paths we used but just in case, Path info (Paths are in args parse in the code):
-Saved models: /StyleCLIP/Best_Checkpoints/Suprised.pt
-latents for celebrity data/w_plus: /StyleCLIP/celebrity_data/w_plus.npy
-stylegan weights: /StyleCLIP/pretrained_models/stylegan2-ffhq-config-f.pt
-ir_se50_weights: /StyleCLIP/pretrained_models/model_ir_se50.pth
+Inference results are saved automatically in the following folders:
+- `inference_1_results/`  
+- `inference_2_results/`
 
-final terminal prompt:
-python inference_1.py  
-python inference_2.py
+If path errors occur, adjust the file directories in the args parser accordingly.
 
-Right now the default is to check 'Hillary Clinton' results from inference_1.py and 'Surprised face' results in inference_2.py
+---
 
-The inference results are saved in inference_1_results, inference_2_results respectively
+## Extra Information  
+This implementation introduces additional loss functions such as color, correlation, and orthogonality losses to improve edit quality and disentanglement.  
+Training time was reduced significantly with selective gate training, while maintaining better preservation of expression and identity.  
+Recommended parameters can be tuned in the args file for balancing CLIP loss, ID loss, and other terms depending on the editing prompt.
 
+---
 
+## Missing Files  
+The following files are not included in this repository due to size and licensing restrictions:  
+- train.pt  
+- test.pt  
+- stylegan2-ffhq-config-f.pt  
+- model_ir_se50.pth (ArcFace model)
 
+To obtain them, please visit the official StyleCLIP repository:  
+https://github.com/orpatashnik/StyleCLIP  
+or email himanipaudayal07@kaist.ac.kr for access.
 
+---
 
-
-
-
-
-
+## Acknowledgements  
+Pretrained models and datasets are borrowed from the original StyleCLIP paper.  
+All improvements, including gating mechanisms, training structure, and additional loss terms, are original contributions made by our team.
