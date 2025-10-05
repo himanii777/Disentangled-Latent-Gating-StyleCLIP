@@ -38,8 +38,8 @@ Training data is located in `/StyleCLIP/data`.
 Pretrained weights are located in `/StyleCLIP/pretrained_models/`.  
 Trained results are automatically saved in the following folders:
 
-- `train_1_results/` for static mapper  
-- `train_2_results/` for dynamic mapper  
+- `train_1.py/` for static mapper  
+- `train_2.py/` for dynamic mapper  
 
 If there are path issues, modify them directly in the argument parser of the corresponding training scripts.
 
