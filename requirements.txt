@@ -1,0 +1,15 @@
+torch>=1.7.1
+torchvision>=0.8.2
+numpy<2.0.0  # Downgrade to avoid compatibility issues
+clip @ git+https://github.com/openai/CLIP.git
+Pillow>=8.1.0
+tqdm>=4.56.0
+dlib>=19.21.0
+opencv-python>=4.5.1
+requests>=2.25.1
+ninja>=1.10.0
+scipy>=1.6.0
+gdown  # For downloading Google Drive files
+matplotlib
+pandas
+insightface
